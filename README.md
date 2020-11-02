@@ -15,7 +15,7 @@ En el módulo de inteligencia artificial se seguirá una metodología similar, s
 
 ## Tutoriales
 
-[Intro a R]("https://raw.githack.com/jacobmunozc/ML-IA/main/Intro_a_R/e-ta2_R.html")
+[Intro a R](https://raw.githack.com/jacobmunozc/ML-IA/main/Intro_a_R/e-ta2_R.html)
 
 [Intro a Git](https://raw.githack.com/jacobmunozc/ML-IA/main/Intro_a_Git/e-ta1_Git.html)
 
