@@ -15,9 +15,9 @@ En el módulo de inteligencia artificial se seguirá una metodología similar, s
 
 ## Tutoriales
 
-[Intro a R](https://raw.githack.com/jacobmunozc/ML-IA/main/Intro a R/e-ta2_R.html)
+[Intro a R]('https://raw.githack.com/jacobmunozc/ML-IA/main/Intro a R/e-ta2_R.html')
 
-[Intro a Git](https://raw.githack.com/jacobmunozc/ML-IA/main/Intro a Git/e-ta1_Git.html)
+[Intro a Git]('https://raw.githack.com/jacobmunozc/ML-IA/main/Intro a Git/e-ta1_Git.html')
 
 
 ## Sesión 1: Conceptos introductorios a Machine Learning
