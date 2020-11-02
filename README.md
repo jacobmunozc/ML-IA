@@ -14,9 +14,13 @@ El curso se realizará de manera virtual con sesiones sincrónicas y cada sesió
 En el módulo de inteligencia artificial se seguirá una metodología similar, salvo que no se programará. En lugar de esto, las sesiones intercalarán presentaciones y experiencias interactivas, como demostraciones en vivo, sondeos y discusiones. Al final del curso, se desarrollará un corto taller de co-creación con el objetivo de identificar un reto en la organización en particular que los estudiantes puedan llevarse para trabajar por su cuenta y que pueda beneficiarse de las metodologías de Machine Learning o inteligencia artificial.
 
 ## Tutoriales
-[Intro a R](https://raw.githack.com/jacobmunozc/ML-IA/blob/main/Intro%20a%20R/e-ta2_R.html)
-[Intro a Git](https://raw.githack.com/jacobmunozc/ML-IA/blob/main/Intro%20a%20Git/e-ta1_R.html)
+
+[Intro a R](https://raw.githack.com/jacobmunozc/ML-IA/main/Intro a R/e-ta2_R.html)
+
+[Intro a Git](https://raw.githack.com/jacobmunozc/ML-IA/main/Intro a Git/e-ta1_Git.html)
+
 
 ## Sesión 1: Conceptos introductorios a Machine Learning
-[Slides]()
-[R script]()
+
+  [Slides]() 
+| [R script]()
