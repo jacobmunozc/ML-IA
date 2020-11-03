@@ -64,6 +64,8 @@ The [1] indicates that it is the first result from the command, and in this case
  
 ```{r comment=NA}
     10:40
+    a <- 10:40
+    a[3]
 ```   
 
 The first line starts with the first return value, so is labeled [1]; the second line starts with the 24th, so is labeled [24].
@@ -172,6 +174,10 @@ We can assign names to the rows. For example, we assign the three first letters
 ```{r comment=NA}
     rownames(x) <- LETTERS[1:3]
     x
+    t(x)
+    diag(4)
+    cbind(x,diag(3))
+    rbind(x,diag(4))
 ```
 
 Another useful operations are: 
@@ -236,7 +242,7 @@ Let's start with an analysis of the performance of the U.S. economy during the 1
 The first step is to tell R where is your working directory. This means telling R where are all the files related to your project. You should do this always at the beginning of your R session. You do so by using the `setwd(path)` function. Where path is the path to the folder where you want to write and read things. For example
 
 ```{r eval=FALSE}
-    # setwd("C:/ECON4676/eTA/")
+    setwd("/Users/jacobmunozc/Downloads")
 ```
 you should note that first that I'm using the forward slash. You could also use backslash but in that case you should use double backslash (\\). Note that if you are using MAC you should omit "C:"
 This command line is telling R to write and read everything in the ECON4676/eTA folder (that I assume you created before hand)
@@ -245,6 +251,7 @@ The next step is to download the data. Let's explore two ways of doing so. The f
 The other way to do it, is to use an R function:
   
 ```{r eval=FALSE}
+    setwd("/Users/jacobmunozc/Downloads")
     download.file("https://github.com/ECON-4676-UNIANDES/e-TA/blob/master/e-ta2_R/Data/", "US90.txt")
 ```
 
@@ -253,7 +260,7 @@ The first argument of the `download.file` function is the url where the file is 
 Now, we need to load the *.txt* file to R. To do so we use the `read.table` function.
 
 ```{r comment=NA}
-    US90<-read.table("data/US90.txt", sep="", header=TRUE)
+    US90<-read.table("/Users/jacobmunozc/Downloads/US90.txt", sep="", header=TRUE)
 ```
 What this function does is read the US90.txt file, names the data set as "US90" and tells R that the variables are separated by a blank space (`sep=""`) and that the first column is the header. Obviously remembering all the arguments that a specific function can take is ludicrous, by doing `?read.table` or `help(read.table)`  you can see all the options that the function can take.
 
@@ -292,6 +299,8 @@ A useful way to explore your data is checking the main statistics of each variab
 
 ```{r comment=NA}  
     summary(US90)
+  sapply(US90, sd)
+  sd(gdpgr)
 ```   
 
 Which gives you the minimum, 1st quartile, median, 3rd quartile, and maximum of each variable. If you also wish to know the standard deviation of a single variable, just include its name after the command
@@ -396,12 +405,14 @@ Now you start with simple linear regressions. For example, let's check the regre
 ```{r comment=NA}
     model1<-lm(gdpgr~invgr)
     summary(model1)
+    class(model1)
 ```
 
 Please note that you don't need to include the intercept, because R automatically includes it. In the output above you have the main regression diagnostics (F-test, adjusted R-squared, t-statistics, sample size, etc.). The same rule apply to multiple linear regressions. For example, suppose you want to find the main sources of GDP growth. The command is:
 
 ```{r comment=NA}
     model2<-lm(gdpgr~consgr+invgr+producgr+unemp+inf)
+    model2<-lm(gdpgr~consgr+invgr+producgr+unemp+inf, data = US90)
     summary(model2)
 ```
 

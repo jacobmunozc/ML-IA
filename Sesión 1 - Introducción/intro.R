@@ -56,7 +56,7 @@ sqrt(sum(x**2))
 y.norm <- sqrt(sum((y - y.mean)**2))
 x.norm <- sqrt(sum((x - x.mean)**2))
 
-# La distancia del punto en la entrada 100 al putno de la entrada 22
+# La distancia del punto en la entrada 100 al punto de la entrada 22
 sqrt((x[100] - x[20])**2 + (y[100] - y[20])**2)
 
 
@@ -69,7 +69,7 @@ plot(x,y)
 ((x - x.mean) %*% (y - y.mean))/(x.norm*y.norm) 
 
 # Usando iota nos ahorra el calculo del vector de medias
-X <- matrix(c(x,y),nrow = 1000,ncol = 2)
+X <- cbind(x,y)  #matrix(c(x,y),nrow = 1000,ncol = 2)
 iota <- rep(1,1000)
 X.c <- (diag(1000) - iota %*% solve(t(iota) %*% iota) %*% t(iota)) %*% X
 
@@ -96,6 +96,7 @@ hist(df$x,main = 'Histograma x', xlab = 'x')
 hist(df$y,main = 'Histograma y', xlab = 'y')
 
 install.packages('stargazer')
+
 
 stargazer::stargazer(df)
 stargazer::stargazer(df,type = 'html')
