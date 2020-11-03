@@ -15,6 +15,8 @@ En el módulo de inteligencia artificial se seguirá una metodología similar, s
 
 ## Tutoriales
 
+Estos tutoriales (e-TAs) introductorios fueron tomados del curso Big Data and Machine Learning for Applied Economics de la Universidad de los Andes.
+
 [Intro a R](https://raw.githack.com/jacobmunozc/ML-IA/main/Intro_a_R/e-ta2_R.html)
 
 [Intro a Git](https://raw.githack.com/jacobmunozc/ML-IA/main/Intro_a_Git/e-ta1_Git.html)
