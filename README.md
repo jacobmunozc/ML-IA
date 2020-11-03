@@ -1,4 +1,5 @@
-# Machine learning y principios de inteligencia artificial (ML-IA)
+# Machine learning y principios de inteligencia artificial 
+## ML-IA
 
 En este curso se estudiarán las metodologías más famosas de machine learning (aprendizaje de máquinas) y sus aplicaciones orientadas a responder preguntas de negocio (business intelligence). Se cubrirá la teoría y el código en R de cada una de las técnicas estudiadas, entre las cuales se encuentran modelos supervisado y no supervisado para el análisis predictivo. Se enfatizará en el análisis de los resultados obtenidos en cada modelo, técnicas tradicionales para mejorar su desempeño y comprensión de supuestos para hacer conclusiones acertadas sobre el negocio en cuestión. Al final de este curso los estudiantes podrán desarrollar proyectos de principio a fin de ciencia de datos, desde la formulación de preguntas, limpieza de datos, modelación, extracción de patrones en los datos, y generación de reportes. 
 
@@ -24,5 +25,5 @@ Estos tutoriales (e-TAs) introductorios fueron tomados del curso Big Data and Ma
 
 ## Sesión 1: Conceptos introductorios a Machine Learning
 
-  [Slides]() 
-| [R script]()
+  [Slides](https://github.com/jacobmunozc/ML-IA/blob/main/Sesi%C3%B3n%201%20-%20Introducci%C3%B3n/Sesion_1.pdf) 
+| [R script](https://github.com/jacobmunozc/ML-IA/blob/main/Sesi%C3%B3n%201%20-%20Introducci%C3%B3n/intro.R)
