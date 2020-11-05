@@ -6,7 +6,11 @@ library(ggfortify)
 data(USAccDeaths)
 # Reading data into a variable
 usaccdeaths.data <- USAccDeaths
-autoplot(usaccdeaths.data) +
+
+
+TS <- ts(data = data.frame(runif(120)),start = 1,frequency = 12)
+
+autoplot(TS) +
   labs(title="Total of accidental deaths in USA",caption="Dataset: USAccDeaths", x="Year", y="Total Deaths") 
 
 # Load the required libraries

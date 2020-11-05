@@ -8,9 +8,10 @@ library(gapminder)
 data(gapminder)
 # Load the data into a variable
 gapminder.data <- gapminder
-plot <- ggplot(data=gapminder.data, aes(x=continent, y=lifeExp, fill=continent))
-plot +
+plot <- ggplot(data=gapminder.data, aes(x=continent, y=lifeExp, color=continent))
+plot + 
     geom_boxplot(outlier.size=2) + 
+    geom_jitter() + 
     labs(title="Box plot", 
          subtitle="Distribution of life expectancy by continent",
          caption="Source: Gapminder", x="Continent", y="Life Expectancy")

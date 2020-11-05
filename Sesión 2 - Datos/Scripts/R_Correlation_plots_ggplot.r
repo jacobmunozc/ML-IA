@@ -5,11 +5,11 @@ library(ggplot2)
 # Scatter plot
 
 slid.data <- carData::SLID
-ggplot(slid.data, aes(education, wages)) + 
+ggplot(dplyr::filter(slid.data,!is.na(language)), aes(education, wages)) + 
   geom_point(aes(color = language)) + 
   scale_x_continuous("Education") + 
   scale_y_continuous("Wages") + 
-  theme_bw() + labs(title = "Scatterplot") + 
+  theme_bw() + labs(title = "Scatterplot") +
   facet_wrap(~language) + 
   labs(title="Scatter plot", 
        subtitle="Relationship between wages and education of people",

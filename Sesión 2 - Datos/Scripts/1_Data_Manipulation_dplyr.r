@@ -3,7 +3,8 @@
 
 # Setting string values as characters
 # Loading the greek characters
-wine <- read.csv("/Users/jacobmunozc/Dropbox/Curso Machine Learninng SFC/Built/Sesión 2 - Datos/Data/archive/winemag-data-130k-v2.csv",
+url <- 'https://github.com/jacobmunozc/ML-IA/blob/main/Sesi%C3%B3n%202%20-%20Datos/Data/archive/winemag-data-130k-v2.csv?raw=true'
+wine <- read.csv(url,
                 stringsAsFactors = FALSE,
                 encoding = 'UTF-8')
 
@@ -22,7 +23,7 @@ wine %>%
   arrange(desc(count))
 
 # Creating a new variable which contains the top 10 countries
-selected_countries = wine %>% 
+selected_countries <- wine %>% 
   group_by(country) %>% 
   summarize(count=n()) %>% 
   arrange(desc(count)) %>% 
