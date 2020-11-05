@@ -27,3 +27,11 @@ Estos tutoriales (e-TAs) introductorios fueron tomados del curso Big Data and Ma
 
   [Slides](https://github.com/jacobmunozc/ML-IA/blob/main/Sesi%C3%B3n%201%20-%20Introducci%C3%B3n/Sesion_1.pdf) 
 | [R script](https://github.com/jacobmunozc/ML-IA/blob/main/Sesi%C3%B3n%201%20-%20Introducci%C3%B3n/intro.R)
+| [Datos](https://github.com/jacobmunozc/ML-IA/tree/main/Sesi%C3%B3n%201%20-%20Introducci%C3%B3n/Data)
+
+
+## Sesión 2: Visualización, estructuración y preprocesamiento de datos
+
+  [Slides](https://github.com/jacobmunozc/ML-IA/blob/main/Sesi%C3%B3n%202%20-%20Datos/Sesion_2.pdf) 
+| [R scripts](https://github.com/jacobmunozc/ML-IA/tree/main/Sesi%C3%B3n%202%20-%20Datos/Scripts)
+| [Datos](https://github.com/jacobmunozc/ML-IA/tree/main/Sesi%C3%B3n%202%20-%20Datos/Data)
