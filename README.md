@@ -35,3 +35,10 @@ Estos tutoriales (e-TAs) introductorios fueron tomados del curso Big Data and Ma
   [Slides](https://github.com/jacobmunozc/ML-IA/blob/main/Sesi%C3%B3n%202%20-%20Datos/Sesion_2.pdf) 
 | [R scripts](https://github.com/jacobmunozc/ML-IA/tree/main/Sesi%C3%B3n%202%20-%20Datos/Scripts)
 | [Datos](https://github.com/jacobmunozc/ML-IA/tree/main/Sesi%C3%B3n%202%20-%20Datos/Data)
+
+
+## Sesión 3: Regresión y clasificación 1
+
+  [Slides](https://github.com/jacobmunozc/ML-IA/blob/main/Sesi%C3%B3n%203%20-%20Regresi%C3%B3n%20y%20clasificaci%C3%B3n%201/Sesion_3.pdf) 
+| [R scripts](https://github.com/jacobmunozc/ML-IA/tree/main/Sesi%C3%B3n%203%20-%20Regresi%C3%B3n%20y%20clasificaci%C3%B3n%201/Scritps)
+| [Datos](https://github.com/jacobmunozc/ML-IA/tree/main/Sesi%C3%B3n%203%20-%20Regresi%C3%B3n%20y%20clasificaci%C3%B3n%201/Data)
