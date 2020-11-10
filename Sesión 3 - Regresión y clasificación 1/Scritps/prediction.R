@@ -87,13 +87,45 @@ model <- train(price ~., data = matchdata, method = "lm",
 print(model)
 
 
-
-
 # Looping en R
 
-for (variable in vector) {
-  
+aux <- c()
+for (x in 1:3) {
+  aux[x] <- x
 }
 
+aux <- c()
+lapply(1:3,function(x) aux[x] <- x)
 
-lapply(list, function)
+
+###### Encontrar el mejor modelo 
+
+# 1. Encontrar el CV de cada modelo
+
+vars <- list(
+  model1 = c('bedrooms','bathrooms','centair','fireplace','brick'),
+  model2 = c('bedrooms','bathrooms','centair','fireplace','brick',
+               'lnland','lnbldg','rooms','garage1','garage2','dcbd','rr',
+               'yrbuilt','latitude','longitude'),
+  model3 = c('bedrooms')
+) 
+
+model <- c()
+for (x in 1:3) {
+  model[x] <- train(x = matchdata %>% select(all_of(vars[[x]])),
+                 y = matchdata$price,
+                 # data = matchdata,
+                 method = "lm", metric = "RMSE",
+                 trControl = trainControl(method = "cv", number = 10))$results$RMSE
+}
+
+model
+
+ggplot(NULL,aes(x = 1:3, y = model)) + geom_bar(stat = 'identity') + 
+  labs(x = 'modelo', y = 'RMSE', title = 'Validación cruzada de modelos') + 
+  theme_bw()
+
+# 2. Elegir el modelo con menor AveragedMSE (CV)
+# Modelo 2 tiene el mejor desempeño de los 3 modelos ajustados.
+
+
