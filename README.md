@@ -36,9 +36,53 @@ Estos tutoriales (e-TAs) introductorios fueron tomados del curso Big Data and Ma
 | [R scripts](https://github.com/jacobmunozc/ML-IA/tree/main/Sesi%C3%B3n%202%20-%20Datos/Scripts)
 | [Datos](https://github.com/jacobmunozc/ML-IA/tree/main/Sesi%C3%B3n%202%20-%20Datos/Data)
 
+Para profundizar: SQL queries vía dbplyr, plotly hover text, sliders y dropdown menus.
+
 
 ## Sesión 3: Regresión y clasificación 1
 
   [Slides](https://github.com/jacobmunozc/ML-IA/blob/main/Sesi%C3%B3n%203%20-%20Regresi%C3%B3n%20y%20clasificaci%C3%B3n%201/Sesion_3.pdf) 
 | [R scripts](https://github.com/jacobmunozc/ML-IA/tree/main/Sesi%C3%B3n%203%20-%20Regresi%C3%B3n%20y%20clasificaci%C3%B3n%201/Scritps)
 | [Datos](https://github.com/jacobmunozc/ML-IA/tree/main/Sesi%C3%B3n%203%20-%20Regresi%C3%B3n%20y%20clasificaci%C3%B3n%201/Data)
+
+Para profundizar: estimación indirecta de error de prueba (AIC, BIC, Cp, R cuadrado ajustado), best subset selection, stepwise selection, forward selection, backward selection.
+
+
+## Sesión 4: Regresión y clasificación 2
+
+  [Slides]() 
+| [R scripts]()
+| [Datos]()
+
+
+## Sesión 5: Regresión y clasificación 3
+
+  [Slides]() 
+| [R scripts]()
+| [Datos]()
+
+
+
+## Sesión 6: Análisis no supervisado
+
+  [Slides]() 
+| [R scripts]()
+| [Datos]()
+
+
+
+## Sesión 7: Mineria de texto
+
+  [Slides]() 
+| [R scripts]()
+| [Datos]()
+
+
+## Sesión 8: Otros análisis y reportes
+
+  [Slides]() 
+| [R scripts]()
+| [Datos]()
+
+
+
