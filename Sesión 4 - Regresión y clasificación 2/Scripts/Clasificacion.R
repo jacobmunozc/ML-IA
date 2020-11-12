@@ -11,7 +11,13 @@ str(fgl)
 
 # Ejercicio 1: graficar distribuciones de cada tipo para cada variable 
 
+require(ggplot2)
+require(tidyr)
 
+fgl %>% 
+  pivot_longer(cols = c("RI","Na","Mg","Al","Si","K","Ca","Ba","Fe"), values_to = 'values', names_to = 'oxides') %>% 
+  ggplot(aes(x = type, y = values)) + geom_boxplot() + 
+  facet_wrap(oxides ~ ., scales = 'free')
 
 # PSA: distancias...matriz de datos...las unidades importan
 
@@ -27,8 +33,6 @@ N1 <- knn(train = x[-test,], test = x[test,], cl = fgl$type[-test], k = 1)
 N5 <- knn(train = x[-test,], test = x[test,], cl = fgl$type[-test], k = 5)
 
 data.frame(fgl$type[test],N1,N5)
-
-
 
 
 
