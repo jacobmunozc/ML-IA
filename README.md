@@ -50,9 +50,9 @@ Para profundizar: estimación indirecta de error de prueba (AIC, BIC, Cp, R cuad
 
 ## Sesión 4: Regresión y clasificación 2
 
-  [Slides]() 
-| [R scripts]()
-| [Datos]()
+  [Slides](https://github.com/jacobmunozc/ML-IA/blob/main/Sesi%C3%B3n%204%20-%20Regresi%C3%B3n%20y%20clasificaci%C3%B3n%202/Sesion_4.pdf) 
+| [R scripts](https://github.com/jacobmunozc/ML-IA/tree/main/Sesi%C3%B3n%204%20-%20Regresi%C3%B3n%20y%20clasificaci%C3%B3n%202/Scripts)
+| [Datos](https://github.com/jacobmunozc/ML-IA/tree/main/Sesi%C3%B3n%204%20-%20Regresi%C3%B3n%20y%20clasificaci%C3%B3n%202/Data)
 
 
 ## Sesión 5: Regresión y clasificación 3
