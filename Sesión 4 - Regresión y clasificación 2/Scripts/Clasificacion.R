@@ -1,4 +1,7 @@
 
+
+# kNN -------------------------------------------------------------------------------------------------------------
+
 require(class) # para kNN
 require(MASS) # Para los datos
 
@@ -23,5 +26,15 @@ test <- sample(1:214,10)
 N1 <- knn(train = x[-test,], test = x[test,], cl = fgl$type[-test], k = 1)
 N5 <- knn(train = x[-test,], test = x[test,], cl = fgl$type[-test], k = 5)
 
+data.frame(fgl$type[test],N1,N5)
 
 
+
+
+
+# Logit -----------------------------------------------------------------------------------------------------------
+
+require(gamlr)  # ML
+
+# Datos
+credito <- readRDS('/Users/jacobmunozc/Dropbox/Curso Machine Learninng SFC/Consolidado/ML-IA/Sesión 4 - Regresión y clasificación 2/Data/credit_class.rds')
