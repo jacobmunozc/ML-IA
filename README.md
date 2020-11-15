@@ -45,7 +45,7 @@ Para profundizar: SQL queries vía dbplyr, plotly hover text, sliders y dropdown
 | [R scripts](https://github.com/jacobmunozc/ML-IA/tree/main/Sesi%C3%B3n%203%20-%20Regresi%C3%B3n%20y%20clasificaci%C3%B3n%201/Scritps)
 | [Datos](https://github.com/jacobmunozc/ML-IA/tree/main/Sesi%C3%B3n%203%20-%20Regresi%C3%B3n%20y%20clasificaci%C3%B3n%201/Data)
 
-Para profundizar: estimación indirecta de error de prueba (AIC, BIC, Cp, R cuadrado ajustado), best subset selection, stepwise selection, forward selection, backward selection.
+Para profundizar: cost funnction y regular, batch and stochastic gradient descent
 
 
 ## Sesión 4: Regresión y clasificación 2
@@ -54,6 +54,7 @@ Para profundizar: estimación indirecta de error de prueba (AIC, BIC, Cp, R cuad
 | [R scripts](https://github.com/jacobmunozc/ML-IA/tree/main/Sesi%C3%B3n%204%20-%20Regresi%C3%B3n%20y%20clasificaci%C3%B3n%202/Scripts)
 | [Datos](https://github.com/jacobmunozc/ML-IA/tree/main/Sesi%C3%B3n%204%20-%20Regresi%C3%B3n%20y%20clasificaci%C3%B3n%202/Data)
 
+Para profundizar: estimación indirecta de error de prueba (AIC, BIC, Cp, R cuadrado ajustado), best subset selection, stepwise selection, forward selection, backward selection.
 
 ## Sesión 5: Regresión y clasificación 3
 
