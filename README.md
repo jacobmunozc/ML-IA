@@ -45,7 +45,7 @@ Para profundizar: SQL queries vía dbplyr, plotly hover text, sliders y dropdown
 | [R scripts](https://github.com/jacobmunozc/ML-IA/tree/main/Sesi%C3%B3n%203%20-%20Regresi%C3%B3n%20y%20clasificaci%C3%B3n%201/Scritps)
 | [Datos](https://github.com/jacobmunozc/ML-IA/tree/main/Sesi%C3%B3n%203%20-%20Regresi%C3%B3n%20y%20clasificaci%C3%B3n%201/Data)
 
-Para profundizar: cost funnction y regular, batch and stochastic gradient descent
+Para profundizar: cost functions; regular, batch and stochastic gradient descent
 
 
 ## Sesión 4: Regresión y clasificación 2
@@ -63,7 +63,7 @@ Para profundizar: estimación indirecta de error de prueba (AIC, BIC, Cp, R cuad
 | [R scripts](https://github.com/jacobmunozc/ML-IA/tree/main/Sesi%C3%B3n%205%20-%20Regresi%C3%B3n%20y%20clasificaci%C3%B3n%203/Scripts)
 | [Datos](https://github.com/jacobmunozc/ML-IA/tree/main/Sesi%C3%B3n%205%20-%20Regresi%C3%B3n%20y%20clasificaci%C3%B3n%203/Data)
 
-Para profundizar: Adaptative Boosting (AdaBoost), tree model hyperparameters, árboles de regresión,  
+Para profundizar: Adaptative Boosting (AdaBoost), tree model hyperparameters, árboles de regresión. 
 
 
 ## Sesión 6: Análisis no supervisado
