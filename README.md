@@ -58,10 +58,12 @@ Para profundizar: estimación indirecta de error de prueba (AIC, BIC, Cp, R cuad
 
 ## Sesión 5: Regresión y clasificación 3
 
-  [Slides]() 
-| [R scripts]()
-| [Datos]()
 
+  [Slides](https://github.com/jacobmunozc/ML-IA/blob/main/Sesi%C3%B3n%205%20-%20Regresi%C3%B3n%20y%20clasificaci%C3%B3n%203/Sesion_5.pdf) 
+| [R scripts](https://github.com/jacobmunozc/ML-IA/tree/main/Sesi%C3%B3n%205%20-%20Regresi%C3%B3n%20y%20clasificaci%C3%B3n%203/Scripts)
+| [Datos](https://github.com/jacobmunozc/ML-IA/tree/main/Sesi%C3%B3n%205%20-%20Regresi%C3%B3n%20y%20clasificaci%C3%B3n%203/Data)
+
+Para profundizar: Adaptative Boosting (AdaBoost), tree model hyperparameters, árboles de regresión,  
 
 
 ## Sesión 6: Análisis no supervisado
@@ -69,7 +71,6 @@ Para profundizar: estimación indirecta de error de prueba (AIC, BIC, Cp, R cuad
   [Slides]() 
 | [R scripts]()
 | [Datos]()
-
 
 
 ## Sesión 7: Mineria de texto
