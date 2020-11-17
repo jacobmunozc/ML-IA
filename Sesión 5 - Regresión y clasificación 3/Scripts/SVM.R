@@ -87,7 +87,7 @@ summary(best.model)
 # Desempeño del model
 
 set.seed(123)
-xx <- matrix(rnorm(20*2), ncol = 2)
+x <- matrix(rnorm(20*2), ncol = 2)
 y <- rep(c(-1,1), each = 10)
 
 x[y == 1,] <- x[y == 1,] + 1
