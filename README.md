@@ -68,9 +68,8 @@ Para profundizar: Adaptative Boosting (AdaBoost), tree model hyperparameters, á
 
 ## Sesión 6: Análisis no supervisado
 
-  [Slides](Sesión 6 - Aprendizaje no supervisado/Sesion_6.pdf) 
-| [R scripts]()
-| [Datos]()
+  [Slides](https://github.com/jacobmunozc/ML-IA/blob/main/Sesi%C3%B3n%206%20-%20Aprendizaje%20no%20supervisado/Sesion_6.pdf) 
+| [R scripts](https://github.com/jacobmunozc/ML-IA/blob/main/Sesi%C3%B3n%206%20-%20Aprendizaje%20no%20supervisado/Unsupervised.R)
 
 
 ## Sesión 7: Mineria de texto
