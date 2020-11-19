@@ -41,6 +41,16 @@ iris.comp[ , c("Species", "Predictions")]
 equiv.id <- iris.comp$Species != iris.comp$Predicciones
 iris.comparison[equiv.id,]
 
+## View misclassified rows
+disagreement.index <- iris.comparison$Species != iris.comparison$Predictions
+iris.comparison[disagreement.index,]
+
+## Si en lugar queremos probabilidades
+# iris.pred <- predict(iris.tree, iris.test, type = "prob")
+
+## Matriz de confusión
+iris.confusion <- table(iris.predictions, iris.test$Species)
+
 
 ### Ajuste de Parámetros ##
 
@@ -79,13 +89,75 @@ table(kyphosis.test$Kyphosis)
 
 model.1 <- rpart(Kyphosis ~ ., data = kyphosis.train)
 
+## MODELO 1 EVALUACION
+## Make predictions using the default decision tree
+kyphosis.dt.1.predictions <- predict(kyphosis.dt.1.model, kyphosis.test, type = "class")
+
+## create confusion matrix
+kyphosis.dt.1.confusion <- table(kyphosis.dt.1.predictions, kyphosis.test[,"Kyphosis"])
+print(kyphosis.dt.1.confusion)
+## accuracy
+kyphosis.dt.1.accuracy <- sum(diag(kyphosis.dt.1.confusion)) / sum(kyphosis.dt.1.confusion)
+print(kyphosis.dt.1.accuracy)
+## precision
+kyphosis.dt.1.precision <- kyphosis.dt.1.confusion[2,2] / sum(kyphosis.dt.1.confusion[2,])
+print(kyphosis.dt.1.precision)
+## recall
+kyphosis.dt.1.recall <- kyphosis.dt.1.confusion[2,2] / sum(kyphosis.dt.1.confusion[,2])
+print(kyphosis.dt.1.recall)
+## F1 score
+kyphosis.dt.1.F1 <- 2 * kyphosis.dt.1.precision * kyphosis.dt.1.recall / (kyphosis.dt.1.precision + kyphosis.dt.1.recall)
+print(kyphosis.dt.1.F1)
+
+
+
 ## MODELO 2
 ## Dividamos con  information gain, minsplit = 20, cp = 0.01
 model.2 <- rpart(Kyphosis ~ ., data = kyphosis.train, parms = list(split = "information"))
 
-## BUILD MODEL 3
+## MODELO 2 EVALUATION
+## make prediction using decision model
+kyphosis.dt.2.predictions <- predict(kyphosis.dt.2.model, kyphosis.test, type = "class")
+## build the confusion matrix
+kyphosis.dt.2.confusion <- table(kyphosis.dt.2.predictions, kyphosis.test[,"Kyphosis"])
+print(kyphosis.dt.2.confusion)
+## accuracy
+kyphosis.dt.2.accuracy <- sum(diag(kyphosis.dt.2.confusion)) / sum(kyphosis.dt.2.confusion)
+print(kyphosis.dt.2.accuracy)
+## precision
+kyphosis.dt.2.precision <- kyphosis.dt.2.confusion[2,2] / sum(kyphosis.dt.2.confusion[2,])
+print(kyphosis.dt.2.precision)
+## recall
+kyphosis.dt.2.recall <- kyphosis.dt.2.confusion[2,2] / sum(kyphosis.dt.2.confusion[,2])
+print(kyphosis.dt.2.recall)
+## F1 score
+kyphosis.dt.2.F1 <- 2 * kyphosis.dt.2.precision * kyphosis.dt.2.recall / (kyphosis.dt.2.precision + kyphosis.dt.2.recall)
+print(kyphosis.dt.2.F1)
+
+
+##  MODELO 3
 ## Splitting on gini index; cp = 0.1, minsplit = 10
 model.3 <- rpart(Kyphosis ~ ., data = kyphosis.train, control = rpart.control(cp = 0.1, minsplit = 10))
+
+## make prediction using decision model
+kyphosis.dt.3.predictions <- predict(kyphosis.dt.3.model, kyphosis.test, type = "class")
+## show the confusion matrix
+kyphosis.dt.3.confusion <- table(kyphosis.dt.3.predictions, kyphosis.test[,"Kyphosis"])
+print(kyphosis.dt.3.confusion)
+## accuracy
+kyphosis.dt.3.accuracy <- sum(diag(kyphosis.dt.3.confusion)) / sum(kyphosis.dt.3.confusion)
+print(kyphosis.dt.3.accuracy)
+## precision
+kyphosis.dt.3.precision <- kyphosis.dt.3.confusion[2,2] / sum(kyphosis.dt.3.confusion[2,])
+print(kyphosis.dt.3.precision)
+## recall
+kyphosis.dt.3.recall <- kyphosis.dt.3.confusion[2,2] / sum(kyphosis.dt.3.confusion[,2])
+print(kyphosis.dt.3.recall)
+## F1 score
+kyphosis.dt.3.F1 <- 2 * kyphosis.dt.3.precision * kyphosis.dt.3.recall / (kyphosis.dt.3.precision + kyphosis.dt.3.recall)
+print(kyphosis.dt.3.F1)
+
+
 
 ## VISUALIZACION
 par(mfrow = c(1,3), xpd = TRUE)
@@ -182,5 +254,12 @@ summary(titanic.test$Survived)
 titanic.bst.model <- bst(titanic.train[,2:8], titanic.train$Survived, family = "hinge", learner = "tree")
 #titanic.bst.model <- bst(titanic.train[,2:8], titanic.train$Survived, family = "hinge", learner = "tree", control.tree=list(maxdepth=2))
 print(titanic.bst.model)
+
+
+
+
+
+
+# EJERCICIO: usar boosting y RF sobre Iris y Kyphosis 
 
 
