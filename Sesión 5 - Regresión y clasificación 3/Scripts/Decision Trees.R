@@ -25,7 +25,7 @@ plot(iris.tree, margin = c(.25))
 title(main = "Decision Tree Model of Iris Data")
 text(iris.tree, use.n = TRUE)
 
-
+require(rpart.plot)
 rpart.plot::rpart.plot(iris.tree)
 summary(iris.tree)
 
@@ -35,21 +35,17 @@ iris.pred <- predict(iris.tree, iris.test, type = "class")
 ## Comparison table
 iris.comp <- iris.test
 iris.comp$Predicciones <- iris.pred
-iris.comp[ , c("Species", "Predictions")]
+iris.comp[ , c("Species", "Predicciones")]
 
 ## En cuáles nos equivocamos?
 equiv.id <- iris.comp$Species != iris.comp$Predicciones
-iris.comparison[equiv.id,]
-
-## View misclassified rows
-disagreement.index <- iris.comparison$Species != iris.comparison$Predictions
-iris.comparison[disagreement.index,]
+iris.comp[equiv.id,]
 
 ## Si en lugar queremos probabilidades
 # iris.pred <- predict(iris.tree, iris.test, type = "prob")
 
 ## Matriz de confusión
-iris.confusion <- table(iris.predictions, iris.test$Species)
+iris.confusion <- table(iris.pred, iris.test$Species)
 
 
 ### Ajuste de Parámetros ##
@@ -61,7 +57,6 @@ tree.param <- rpart.control(minsplit = 20, minbucket = 7, maxdepth = 30, cp = 0.
 ## Usemos parameteros de arriba y Gini index para las divisiones
 iris.tree <- rpart(Species ~ ., data = iris.train, 
                    control = tree.param, parms = list(split = "gini"))
-
 
 
 #  Kyphosis data
@@ -91,7 +86,7 @@ model.1 <- rpart(Kyphosis ~ ., data = kyphosis.train)
 
 ## MODELO 1 EVALUACION
 ## Make predictions using the default decision tree
-kyphosis.dt.1.predictions <- predict(kyphosis.dt.1.model, kyphosis.test, type = "class")
+kyphosis.dt.1.predictions <- predict(model.1, kyphosis.test, type = "class")
 
 ## create confusion matrix
 kyphosis.dt.1.confusion <- table(kyphosis.dt.1.predictions, kyphosis.test[,"Kyphosis"])
@@ -117,7 +112,7 @@ model.2 <- rpart(Kyphosis ~ ., data = kyphosis.train, parms = list(split = "info
 
 ## MODELO 2 EVALUATION
 ## make prediction using decision model
-kyphosis.dt.2.predictions <- predict(kyphosis.dt.2.model, kyphosis.test, type = "class")
+kyphosis.dt.2.predictions <- predict(model.2, kyphosis.test, type = "class")
 ## build the confusion matrix
 kyphosis.dt.2.confusion <- table(kyphosis.dt.2.predictions, kyphosis.test[,"Kyphosis"])
 print(kyphosis.dt.2.confusion)
@@ -140,7 +135,7 @@ print(kyphosis.dt.2.F1)
 model.3 <- rpart(Kyphosis ~ ., data = kyphosis.train, control = rpart.control(cp = 0.1, minsplit = 10))
 
 ## make prediction using decision model
-kyphosis.dt.3.predictions <- predict(kyphosis.dt.3.model, kyphosis.test, type = "class")
+kyphosis.dt.3.predictions <- predict(model.3, kyphosis.test, type = "class")
 ## show the confusion matrix
 kyphosis.dt.3.confusion <- table(kyphosis.dt.3.predictions, kyphosis.test[,"Kyphosis"])
 print(kyphosis.dt.3.confusion)
@@ -221,7 +216,6 @@ varImpPlot(RF.model)
 
 # Boosting --------------------------------------------------------------------------------------------------------
 
-
 ## load the library
 library(bst)
 
@@ -258,8 +252,5 @@ print(titanic.bst.model)
 
 
 
-
-
 # EJERCICIO: usar boosting y RF sobre Iris y Kyphosis 
-
 

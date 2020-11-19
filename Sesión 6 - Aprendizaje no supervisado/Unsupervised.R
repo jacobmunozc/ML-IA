@@ -1,5 +1,5 @@
 
-# K-means
+# Sesión 6: Aprendizaje no supervisado (K-means)
 
 require(ggplot2)
 require(caret)
@@ -16,7 +16,7 @@ data.scale <- scale(sim.data)
 data.scale[is.na(data.scale)] <- 0
 
 # Vector de almacenamiento
-clusters.sum.squares <- rep(0.0, 9)
+clusters.sum.squares <- rep(0.0, 14)
 
 # Insprección del número de clusters (heterogeneidad de los datos)
 cluster.params <- 2:15
@@ -33,12 +33,11 @@ ggplot(NULL, aes(x=cluster.params, y=clusters.sum.squares)) +
   geom_line() +
   labs(x = "Number of Clusters",
        y = "Suma cuadrada de distancias de clusters",
-       title = "Scree Plot de Datos de Jurídicos")
+       title = "Scree Plot")
 
 
 
 # Ejercicio: usar k-means con titanic
-
 
 
 
@@ -129,7 +128,7 @@ ggplot(NULL, aes(x = cluster.params, y = clusters.sum.squares)) +
 
 
 # OK, cluster the data using the value from the elbow method.
-titanic.kmeans <- kmeans(titanic.dummy, centers = 4)
+titanic.kmeans <- kmeans(titanic.dummy, centers = 6)
 
 
 # Add cluster assignments to our data frame
@@ -143,5 +142,4 @@ ggplot(titanic, aes(x = Cluster, fill = Survived)) +
   labs(x = "Cluster Assignment",
        y = "Passenger Count",
        title = "Titanic Training Survivability by Cluster")
-
 
