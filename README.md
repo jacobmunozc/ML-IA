@@ -68,7 +68,7 @@ Para profundizar: Adaptative Boosting (AdaBoost), tree model hyperparameters, á
 
 ## Sesión 6: Análisis no supervisado
 
-  [Slides]() 
+  [Slides](Sesión 6 - Aprendizaje no supervisado/Sesion_6.pdf) 
 | [R scripts]()
 | [Datos]()
 
