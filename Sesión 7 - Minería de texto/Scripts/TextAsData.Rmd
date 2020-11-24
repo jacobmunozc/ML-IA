@@ -27,7 +27,7 @@ Primero, necesita tener **quanteda** instalado.  Puede hacerlo desde RStudio, de
 install.packages("quanteda")
 ```
 
-(Opcional) Puede instalar corpus data adicional de **quantedaData** usando
+(Opcional) Puede instalar datos corpus adicionales de **quantedaData** usando
 
 ```{r, eval=FALSE}
 ## the devtools package is required to install quanteda from Github
