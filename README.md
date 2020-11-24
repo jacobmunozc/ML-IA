@@ -74,9 +74,9 @@ Para profundizar: Adaptative Boosting (AdaBoost), tree model hyperparameters, á
 
 ## Sesión 7: Mineria de texto
 
-  [Slides]() 
-| [R scripts]()
-| [Datos]()
+  [Slides](https://github.com/jacobmunozc/ML-IA/blob/main/Sesi%C3%B3n%207%20-%20Miner%C3%ADa%20de%20texto/Sesion_7.pdf) 
+| [Rmd](https://raw.githack.com/jacobmunozc/ML-IA/main/Sesión 7 - Minería de texto/TextAsData.html)
+| [Datos](https://github.com/jacobmunozc/ML-IA/tree/main/Sesi%C3%B3n%207%20-%20Miner%C3%ADa%20de%20texto/Data)
 
 
 ## Sesión 8: Otros análisis y reportes
