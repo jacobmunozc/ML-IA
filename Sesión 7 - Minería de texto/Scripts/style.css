@@ -1,0 +1,17 @@
+.tocify-header { 
+     text-indent: initial; 
+       padding-left: 2em;
+ } 
+ 
+.tocify-subheader > .tocify-item {
+     text-indent: initial;
+     padding-left: 2em;
+}
+table {
+   margin: auto; 
+   border-top: 1px solid #666; 
+   border-bottom: 1px solid #666; 
+}
+table thead th { border-bottom: 1px solid #ddd; }
+th, td { padding: 5px; }
+tr:nth-child(even) { background: #eee; }

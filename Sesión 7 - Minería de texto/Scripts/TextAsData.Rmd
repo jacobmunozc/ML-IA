@@ -1,7 +1,16 @@
 ---
 title: "Sesión 8: Minería de texto"
 author: "Jacob Muñoz | ML-IA (Adaptedo del código de Ken Benoit y del material de curso de Kevin Munger)"
-output: html_document
+output: 
+  html_document:
+    css: style.css
+    highlight: tango
+    # code_folding: hide
+    toc: yes
+    toc_float: 
+      smooth_scroll: true
+    toc_depth: 2
+fontfamily: Monaco
 ---
 
 ```{r, echo = FALSE}
