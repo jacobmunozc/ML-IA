@@ -1,2 +1,0 @@
-# Minería de texto
-
