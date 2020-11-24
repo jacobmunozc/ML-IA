@@ -1,0 +1,702 @@
+---
+title: "Sesión 8: Minería de texto"
+author: "Jacob Muñoz | ML-IA"
+authornote: |
+  Adaptedo del código de Ken Benoit y del material de curso de Kevin Munger
+output: html_document
+---
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE
+)
+```
+
+# Preliminares: instalación
+
+Primero, necesita tener **quanteda** instalado.  Puede hacerlo desde RStudio, del menú Tools...Install Packages, o simplemente usando
+
+```{r, eval = FALSE}
+install.packages("quanteda")
+```
+
+(Opcional) Puede instalar corpus data adicional de **quantedaData** usando
+
+```{r, eval=FALSE}
+## the devtools package is required to install quanteda from Github
+devtools::install_github("quanteda/quanteda.corpora")
+```
+
+En **Windows platforms**, es recomendado que instale [RTools suite](https://cran.r-project.org/bin/windows/Rtools/), y para **OS X**, que instale [XCode](https://itunes.apple.com/gb/app/xcode/id497799835?mt=12) del App Store.
+
+
+#### Probemos el setup
+
+Resumamos algunos textos en el State of the Union corpus:
+```{r}
+require(quanteda)
+summary(data_corpus_inaugural)
+```
+
+Creemos una matriz documento-atributo a partir del corpus, removiendo stop words:
+```{r}
+ieDfm <- dfm(
+  data_corpus_inaugural, 
+  remove = c(stopwords("english"), "God", "Bless", "America"), 
+  stem = TRUE)
+```
+
+Echemos un vistazo a los atributos más recurrentes:
+```{r}
+topfeatures(ieDfm)
+```
+
+Una forma de graficar esto es en una nube de palabras:
+```{r, fig.width=8, fig.height=8}
+textplot_wordcloud(ieDfm, min_count = 25, random_order = FALSE)
+```
+
+
+
+
+# Introducción y flujo de trabajo
+
+Esta sección demuestra un workflow básico para tomar algunos textos preparados y realizar tareas básicas de análisis de texto. El paquete `quanteda` viene con un conjunto de discursos presidenciales. Empezamos por examinar estos textos. La función `summary` devuelve el nombre de cada texto junto con el número de types, tokens y oraciones contenidas en el  texto. Abajo usamos la sintaxis de indexación de R para selectivamente usar la función summary en los primeros cinco textos.
+
+```{r}
+
+summary(data_corpus_inaugural)
+summary(data_corpus_inaugural[1:5])
+
+data_corpus_inaugural[1]
+cat(data_corpus_inaugural[2])
+
+ndoc(data_corpus_inaugural)
+docnames(data_corpus_inaugural)
+
+nchar(data_corpus_inaugural[1:7])
+ntoken(data_corpus_inaugural[1:7])
+ntoken(data_corpus_inaugural[1:7], remove_punct = TRUE)
+ntype(data_corpus_inaugural[1:7])
+```
+
+
+Una de las tareas de análisis de texto más fundamentales es la tokenización. Tokenizar un texto es dividirlo en unidades, más comúnmente palabras, que se pueden contar y formar la base de un análisis cuantitativo. El paquete quanteda tiene una función de tokenización: `tokens`, que construye un objeto de tokens ** quanteda ** que consiste en los textos segmentados por sus términos (y por defecto, otros elementos como puntuación, números, símbolos, etc.). Examine la página del manual en `? Tokens` para obtener detalles sobre esta función:
+
+
+```{R, eval = FALSE}
+?tokens
+```
+
+La función `tokens` de **quanteda** se puede utilizar en un vector de caracteres simple, un vector de vectores de caracteres o un corpus. Aquí hay unos ejemplos:
+
+```{r}
+tokens("Today is Thursday in Canberra. It is yesterday in London.")
+
+vec <- c(one = "This is text one", 
+         two = "This, however, is the second text")
+tokens(vec)
+```
+
+Considere los argumentos predeterminados para la función `tokens ()`. Para eliminar la puntuación, debes establecer el argumento `remove_punct` en` TRUE`. Podemos combinar esto con la función `char_tolower ()` para obtener una versión limpia y tokenizada de nuestro texto.
+
+```{r}
+tokens(char_tolower(vec), remove_punct = TRUE)
+```
+
+La forma en que se nombra `char_tolower()` refleja la [lógica de la gramática de funciones de **quanteda **](http://quanteda.io/articles/pkgdown_only/design.html). La primera parte (antes del guión bajo `_`) nombra las dos clases de objeto que se ingresan a la función y que la función devuelve. Para poner en minúscula un objeto de clase R `character`, por ejemplo, usa` char_tolower () `, y para poner en minúscula un objeto de clase **quanteda**` tokens`, usa `tokens_tolower ()`. Algunas clases de objetos se definen en la base R, y otras se han definido mediante paquetes que amplían la funcionalidad de R (**quanteda** es un ejemplo; hay [más de 10,000 paquetes contribuidos](https: //cran.r-project.org/web/packages/) solo en el archivo CRAN. CRAN significa Red Completa de Archivos R y es donde se publica el paquete **quanteda**).
+
+
+Usando esta función con las direcciones inaugurales:
+
+```{r}
+inaugTokens <- tokens(data_corpus_inaugural, remove_punct = TRUE)
+tokens_tolower(inaugTokens[2])
+```
+
+Aquí, proporcionamos uno de los *argumentos* opcionales a la función `tokens ()`: `remove_punct`. Esta función toma un [valor de tipo "lógico"](https://stat.ethz.ch/R-manual/R-devel/library/base/html/logical.html) (`TRUE` o` FALSE`) y especifica si los caracteres de puntuación deben eliminarse o no. La página de ayuda para `tokens ()`, a la que puede acceder usando el comando `?tokens`, detalla todos los argumentos de la función y sus valores válidos.
+
+Cada función en R y sus paquetes contribuidos tiene una página de ayuda, y este es el primer lugar para buscar al examinar una función. Las páginas de ayuda bien redactadas también contienen ejemplos que puede ejecutar para ver cómo funciona una función. Para **quanteda**, las funciones principales también tienen páginas de ayuda con los resultados de ejecutar sus ejemplos en http://quanteda.io/reference/.
+
+Volviendo a la tokenización:
+Una vez que cada texto se ha dividido en palabras, podemos usar la función `dfm` para crear una matriz de recuentos de las ocurrencias de cada palabra en cada documento:
+
+```{r}
+inaugDfm <- dfm(inaugTokens)
+trimmedInaugDfm <- dfm_trim(inaugDfm, min_doc = 5, min_count = 10)
+weightedTrimmedDfm <- dfm_tfidf(trimmedInaugDfm)
+
+require(magrittr)
+inaugDfm2 <- dfm(inaugTokens) %>% 
+    dfm_trim(min_doc = 5, min_count = 10) %>% 
+        dfm_tfidf()
+```
+
+Tenga en cuenta que `dfm ()` funciona en una variedad de tipos de objetos, incluidos vectores de caracteres, objetos de corpus y objetos de texto tokenizados. Esto le da al usuario la máxima flexibilidad y poder, al mismo tiempo que facilita la obtención de resultados similares al pasar directamente de los textos a una matriz de documento por función.
+
+Para ver qué objetos para los que se define cualquier *method* (función) en particular, puede usar la función `methods()`:
+```{r}
+methods(dfm)
+```
+
+Del mismo modo, también puede averiguar qué métodos están definidos para cualquier *class* de objeto dada, utilizando la misma función:
+```{r}
+methods(class = "tokens")
+```
+
+Si nos interesa analizar los textos con respecto a algunas otras variables, podemos crear un objeto corpus para asociar los textos con estos metadatos. Por ejemplo, considere los últimos seis discursos inaugurales:
+
+```{r}
+summary(data_corpus_inaugural[52:57])
+```
+
+Podemos usar la opción `docvars` del comando` corpus` para registrar la fiesta con la que está asociado cada texto:
+
+```{r}
+dv <- data.frame(Party = c("dem", "dem", "rep", "rep", "dem", "dem"))
+recentCorpus <- corpus(data_corpus_inaugural[52:57], docvars = dv)
+summary(recentCorpus)
+```
+
+Podemos usar estos metadatos para combinar características en todos los documentos al crear una matriz de características de documento:
+
+```{r  fig.width=10, fig.height=8, warning=FALSE}
+partyDfm <- dfm(recentCorpus, groups = "Party", remove = (stopwords("english")))
+textplot_wordcloud(partyDfm, comparison = TRUE)
+```
+
+
+
+
+# Manupular texto en R
+
+En esta sección trabajaremos a través de algunas funciones básicas de manipulación de cadenas en R.
+
+## Manejo de cadenas en base R
+
+Hay varias funciones útiles de manipulación de cadenas en la biblioteca base de R. Además, veremos el paquete `stringr` que proporciona una interfaz adicional para la manipulación de texto simple.
+
+El tipo fundamental (o "modo") en el que R almacena texto es el vector de caracteres. El caso más simple es un vector de caracteres de longitud uno. La función `nchar` devuelve el número de caracteres en un vector de caracteres.
+
+```{r message=FALSE}
+s1 <- 'my example text'
+length(s1)
+nchar(s1)
+```
+
+La función `nchar` está vectorizada, lo que significa que cuando se llama a un vector, devuelve un valor para cada elemento del vector.
+
+```{r }
+s2 <- c('This is', 'my example text.', 'So imaginative.')
+length(s2)
+nchar(s2)
+sum(nchar(s2))
+```
+
+Podemos usar esto para responder algunas preguntas sencillas sobre los discursos inaugurales.
+
+¿Cuáles fueron los discursos más largos y más cortos?
+```{r}
+inaugTexts <- texts(data_corpus_inaugural)
+which.max(nchar(inaugTexts))
+which.min(nchar(inaugTexts))
+```
+
+A diferencia de otros lenguajes de programación, no es posible indexar en una "cadena", donde una cadena se define como una secuencia de caracteres de texto, en R:
+
+```{r}
+s1 <- 'This file contains many fascinating example sentences.'
+s1[6:9]
+```
+
+Para extraer una subcadena, en su lugar usamos la función `substr`.
+
+```{r}
+s1 <- 'This file contains many fascinating example sentences.'
+substr(s1, 6,9)
+```
+
+A menudo nos gustaría dividir los vectores de caracteres para extraer un término de interés. Esto es posible usando la función `strsplit`. Considere los nombres de los textos inaugurales:
+
+```{r}
+names(inaugTexts)
+# returns a list of parts
+s1 <- 'split this string'
+strsplit(s1, 'this')
+parts <- strsplit(names(inaugTexts), '-')
+years <- sapply(parts, function(x) x[1])
+pres <-  sapply(parts, function(x) x[2])
+```
+
+La función `paste` se utiliza para unir vectores de caracteres. La forma en que se combinan los elementos depende de los valores de los argumentos `sep` y` collapse`:
+
+```{r} 
+paste('one', 'two', 'three')
+paste('one', 'two', 'three', sep = '_')
+paste(years, pres, sep = '-')
+paste(years, pres, collapse = '-')
+```
+
+
+`tolower` y` toupper` cambian el caso de los vectores de caracteres.
+```{r}
+tolower(s1)
+toupper(s1)
+```
+
+Los vectores de caracteres se pueden comparar usando los operadores `==` y `% in%`:
+```{r}
+tolower(s1) == toupper(s1)
+'apples'=='oranges'
+tolower(s1) == tolower(s1)
+'pears' == 'pears'
+
+c1 <- c('apples', 'oranges', 'pears')
+'pears' %in% c1
+c2 <- c('bananas', 'pears')
+c2 %in% c1
+```
+
+
+
+
+## Coincidencia de patrones y expresiones regulares
+
+Hacer coincidir textos basados en patrones generalizados es una de las operaciones más comunes y más útiles en el procesamiento de texto. La variante más poderosa de estos se conoce como _expresión regular_.
+
+Una expresión regular (o `regex` "para abreviar) es una cadena de texto especial para describir un patrón de búsqueda. Probablemente ya haya usado una forma simple de expresión regular, llamada [" glob "](https://en.wikipedia.org/wiki/Glob_(programming)), que utiliza comodines para la coincidencia de patrones. Por ejemplo, `*.txt` en un símbolo del sistema o una ventana de Terminal encontrará todos los archivos que terminan en` .txt`. Las expresiones regulares son como glob comodines en esteroides. El equivalente de expresiones regulares es `^. * \.txt $`. R incluso tiene una función para convertir de expresiones globales a expresiones regulares: `glob2rx ()`.
+
+En **quanteda**, todas las funciones que toman coincidencias de patrones permiten [tres tipos de coincidencia](http://quanteda.io/reference/valuetype.html): coincidencia fija, donde la coincidencia es exacta y no se utilizan caracteres comodín ; coincidencia "global", que es simple pero a menudo suficiente para las necesidades de un usuario; y expresiones regulares, que liberan todo el poder de las coincidencias de patrones altamente sofisticadas (pero también complicadas).
+
+### Expresiones regulares en base R
+
+Las funciones básicas de R para buscar y reemplazar dentro del texto son similares a los comandos familiares de otros entornos de manipulación de texto, `grep` y` gsub`. La página del manual `grep` proporciona una descripción general de estas funciones.
+
+El comando `grep` prueba si un patrón ocurre dentro de una cadena:
+
+```{r}
+grep('orangef', 'these are oranges')
+grep('pear', 'these are oranges')
+grep('orange', c('apples', 'oranges', 'pears'))
+grep('pears', c('apples', 'oranges', 'pears'))
+```
+
+El comando `gsub` sustituye un patrón por otro dentro de una cadena:
+```{r}
+gsub('oranges', 'apples', 'these are oranges')
+```
+
+
+
+### Expresiones regulares en ** stringr **
+
+#### Coincidencia (matching)
+
+Usando algunas funciones **stringr**, podemos ver más sobre cómo funciona la coincidencia de patrones de expresiones regulares. En una expresión regular, `.` significa" cualquier carácter ". Entonces, usando expresiones regulares con **stringr**, tenemos:
+```{r}
+require(stringr)
+
+pattern <- "a.b"
+strings <- c("abb", "a.b")
+str_detect(strings, pattern)
+```
+
+Algunas variaciones
+
+```{r}
+# Regular expression variations
+str_extract_all("The Cat in the Hat", "[a-z]+")
+str_extract_all("The Cat in the Hat", regex("[a-z]+", TRUE))
+
+str_extract_all("a\nb\nc", "^.")
+str_extract_all("a\nb\nc", regex("^.", multiline = TRUE))
+
+str_extract_all("a\nb\nc", "a.")
+str_extract_all("a\nb\nc", regex("a.", dotall = TRUE))
+
+```
+
+#### Reemplazo
+
+Además de extraer cadenas, también podemos reemplazarlas:
+```{r}
+fruits <- c("one apple", "two pears", "three bananas")
+str_replace(fruits, "[aeiou]", "-")
+str_replace_all(fruits, "[aeiou]", "-")
+
+str_replace(fruits, "([aeiou])", "")
+str_replace(fruits, "([aeiou])", "\\1\\1")
+str_replace(fruits, "[aeiou]", c("1", "2", "3"))
+str_replace(fruits, c("a", "e", "i"), "-")
+```
+
+#### Detectando
+
+También existen funciones para la detección de palabras:
+```{r}
+fruit <- c("apple", "banana", "pear", "pinapple")
+str_detect(fruit, "e")
+fruit[str_detect(fruit, "e")]
+str_detect(fruit, "^a")
+str_detect(fruit, "a$")
+str_detect(fruit, "b")
+str_detect(fruit, "[aeiou]")
+
+# Also vectorised over pattern
+str_detect("aecfg", letters)
+```
+
+Podemos anular la coincidencia predeterminada de expresiones regulares utilizando funciones contenedoras. Vea la diferencia de comportamiento:
+```{r}
+str_detect(strings, fixed(pattern))
+str_detect(strings, coll(pattern))
+```
+
+
+#### Segmentación
+
+También podemos segmentar palabras por sus definiciones de límites, que es parte de la definición Unicode. ** quanteda ** se basa en gran medida en esto para la _tokenización_, que es la segmentación de textos en subunidades (normalmente, términos).
+```{r}
+# Word boundaries
+words <- c("These are   some words.")
+str_count(words, boundary("word"))
+str_split(words, " ")[[1]]
+str_split(words, boundary("word"))[[1]]
+```
+
+#### Otras operaciones
+
+**stringr** también se puede utilizar para eliminar los espacios en blanco iniciales y finales. "Espacio en blanco" tiene una [definición extensa] (http://www.fileformat.info/info/unicode/category/Zs/list.htm), pero se puede considerar en su forma más básica como espacios (`""` ), caracteres de tabulación ("\t") y caracteres de nueva línea ("\n"). `str_trim ()` eliminará estos:
+```{r}
+str_trim("  String with trailing and leading white space\t")
+str_trim("\n\nString with trailing and leading white space\n\n")
+```
+
+
+
+# Introducir textos en R
+
+En esta sección mostraremos cómo cargar textos de diferentes fuentes y crear un objeto `corpus` en ** quanteda **.
+
+## Creando un objeto `corpus`
+
+### Textos leídos por el paquete **readtext**
+
+El paquete **quanteda** funciona muy bien con un paquete complementario que hemos escrito con el nombre, descriptivamente, [**readtext**](https://github.com/kbenoit/readtext). **readtext** es un paquete de una función que hace exactamente lo que dice en la lata: lee archivos que contienen texto, junto con cualquier metadato asociado a nivel de documento, que llamamos "docvars", para variables de documento. Los archivos de texto sin formato no tienen docvars, pero otras formas como los archivos .csv, .tab, .xml y .json generalmente sí.
+
+**readtext** acepta máscaras de archivo, por lo que puede especificar un patrón para cargar varios textos, y estos textos pueden incluso ser de varios tipos. ** readtext ** es lo suficientemente inteligente como para procesarlos correctamente, devolviendo un data.frame con un campo primario "texto" que contiene un vector de caracteres de los textos y columnas adicionales del data.frame como se encuentran en las variables del documento de la fuente archivos.
+
+Dado que la codificación también puede ser un problema para quienes leen textos, incluimos funciones para diagnosticar codificaciones archivo por archivo, y le permitimos especificar codificaciones de entrada vectorizadas para leer en tipos de archivo con codificaciones establecidas individualmente (y diferentes) . (Todas las funciones de ecnoding son manejadas por el paquete ** stringi **).
+
+Para instalar **readtext**, deberá usar el paquete **devtools** y luego ejecutar este comando:
+```{r, eval = FALSE}
+# devtools packaged required to install readtext from Github 
+devtools::install_github("kbenoit/readtext") 
+```
+
+
+## Usando `readtext()` para importar textos
+
+En el caso más simple, nos gustaría cargar un conjunto de textos en archivos de texto sin formato desde un solo directorio. Para hacer esto, usamos el comando `textfile`, y usamos el operador 'glob' '*' para indicar que queremos cargar múltiples archivos:
+
+```{r}
+require(readtext)
+myCorpus <- corpus(readtext("inaugural/*.txt"))
+myCorpus <- corpus(readtext("sotu/*.txt"))
+```
+
+A menudo, tenemos metadatos codificados en los nombres de los archivos. Por ejemplo, las direcciones inaugurales contienen el año y el nombre del presidente en el nombre del archivo. Con el argumento `docvarsfrom`, podemos ordenar al comando` textfile` que considere estos elementos como variables de documento.
+
+```{r}
+mytf <- readtext("inaugural/*.txt", docvarsfrom = "filenames", dvsep = "-", 
+                 docvarnames = c("Year", "President"))
+data_corpus_inaugural <- corpus(mytf)
+summary(data_corpus_inaugural, 5)
+```
+
+Si los textos y las variables del documento se almacenan por separado, podemos agregar fácilmente variables del documento al corpus, siempre que el marco de datos que las contiene tenga la misma longitud que los textos:
+
+```{r}
+SOTUdocvars <- read.csv("SOTU_metadata.csv", stringsAsFactors = FALSE)
+SOTUdocvars$Date <- as.Date(SOTUdocvars$Date, "%B %d, %Y")
+SOTUdocvars$delivery <- as.factor(SOTUdocvars$delivery)
+SOTUdocvars$type <- as.factor(SOTUdocvars$type)
+SOTUdocvars$party <- as.factor(SOTUdocvars$party)
+SOTUdocvars$nwords <- NULL
+
+sotuCorpus <- corpus(readtext("sotu/*.txt", encoding = "UTF-8-BOM"))
+docvars(sotuCorpus) <- SOTUdocvars
+```
+
+En algunos sistemas operativos de Windows que no están en inglés, el patrón `"% B% d,% Y "` no funciona. Si sucede, cambie la configuración regional (configuración de idioma) temporalmente:
+
+```{r, eval = FALSE}
+lct <- Sys.getlocale("LC_TIME") # get original locale
+Sys.setlocale("LC_TIME", "C") # set C's basic locale
+SOTUdocvars$Date <- as.Date(SOTUdocvars$Date, "%B %d, %Y")
+Sys.setlocale("LC_TIME", lct) # set original locale
+```
+
+Otro caso común es que nuestros textos se almacenan junto con las variables del documento en un archivo estructurado, como un archivo json, csv o excel. El comando de archivo de texto puede leer los textos y las variables del documento simultáneamente de estos archivos cuando se especifica el nombre del campo que contiene los textos.
+
+```{r}
+tf1 <- readtext("inaugTexts.csv", text_field = "inaugSpeech")
+myCorpus <- corpus(tf1)
+
+
+tf2 <- readtext("text_example.csv", text_field = "Title")
+myCorpus <- corpus(tf2)
+head(docvars(tf2))
+```
+
+## Trabajando con objetos corpus
+
+Una vez que hemos cargado un corpus con algunas variables de nivel de documento, podemos subconjuntar el corpus usando estas variables, crear matrices de características de documento agregando las variables, o extraer los textos concatenados por variable.
+
+```{r}
+recentCorpus <- corpus_subset(data_corpus_inaugural, Year > 1980)
+oldCorpus <- corpus_subset(data_corpus_inaugural, Year < 1880)
+
+demCorpus <- corpus_subset(sotuCorpus, party == 'Democratic')
+demFeatures <- dfm(demCorpus, remove = stopwords('english')) %>%
+    dfm_trim(min_docfreq = 3, min_termfreq = 5) %>% 
+    dfm_tfidf()
+topfeatures(demFeatures)
+
+repCorpus <- corpus_subset(sotuCorpus, party == 'Republican') 
+repFeatures <- dfm(repCorpus, remove = stopwords('english')) %>%
+    dfm_trim(min_docfreq = 3, min_termfreq = 5) %>% 
+    dfm_tfidf()
+topfeatures(repFeatures)
+```
+
+Los objetos de corpus **quanteda** se pueden combinar usando el operador `+`:
+
+```{r}
+data_corpus_inaugural2 <- demCorpus + repCorpus
+dfm(data_corpus_inaugural2, remove = stopwords("english"), remove_punct = TRUE) %>%
+    dfm_trim(min_docfreq = 3, min_termfreq = 5) %>% 
+    dfm_tfidf() %>% 
+    topfeatures
+```
+
+También debería ser posible cargar un archivo zip que contenga textos directamente desde una URL. Sin embargo, si esta operación tiene éxito o no puede depender de la configuración de permisos de acceso en su sistema en particular (es decir, falla en Windows):
+
+```{r eval=FALSE}
+immigfiles <- readtext("https://github.com/kbenoit/ME114/raw/master/day8/UKimmigTexts.zip")
+mycorpus <- corpus(immigfiles)
+summary(mycorpus)
+```
+
+
+
+
+# Preparación de textos para análisis
+
+Aquí repasaremos los elementos básicos de la preparación de un texto para su análisis. Estos son tokenización, conversión a minúsculas, derivación, eliminación o selección de características y definición de clases de equivalencia para características, incluido el uso de diccionarios.
+
+
+
+### 1. Tokenización
+
+La tokenización en quanteda es muy *conservadora*: por defecto, solo elimina los caracteres separadores.
+
+```{r}
+require(quanteda, quietly = TRUE, warn.conflicts = FALSE)
+txt <- c(text1 = "This is $10 in 999 different ways,\n up and down; left and right!",
+         text2 = "@kenbenoit working: on #quanteda 2day\t4ever, http://textasdata.com?page=123.")
+tokens(txt)
+tokens(txt, verbose = TRUE)
+tokens(txt, remove_numbers = TRUE,  remove_punct = TRUE)
+tokens(txt, remove_numbers = FALSE, remove_punct = TRUE)
+tokens(txt, remove_numbers = TRUE,  remove_punct = FALSE)
+tokens(txt, remove_numbers = FALSE, remove_punct = FALSE)
+tokens(txt, remove_numbers = FALSE, remove_punct = FALSE, remove_separators = FALSE)
+```
+
+Hay varias opciones para el argumento `what`:
+```{r}
+# sentence level
+tokens(c("Kurt Vongeut said; only assholes use semi-colons.",
+         "Today is Thursday in Canberra:  It is yesterday in London.",
+         "Today is Thursday in Canberra:  \nIt is yesterday in London.",
+         "To be?  Or\nnot to be?"),
+       what = "sentence")
+tokens(data_corpus_inaugural[2], what = "sentence")
+
+# character level
+tokens("My big fat text package.", what = "character")
+tokens("My big fat text package.", what = "character", remove_separators = FALSE)
+```
+
+Otras dos opciones, para una tokenización realmente rápida y sencilla, son `"fastword "` y `" fastword "`, si el rendimiento es un problema clave. Estos son menos inteligentes que la detección de límites que se usa en el método predeterminado de "palabra", que se basa en la detección de límites de stringi / ICU.
+
+
+
+### 2. Conversión a minúsculas
+
+Este es complicado en nuestro flujo de trabajo, ya que es una forma de declaración de equivalencia, en lugar de un paso de tokenización. Resulta que es más eficiente realizarlo en la etapa previa a la tokenización.
+
+Las funciones **quanteda** `*_tolower` incluyen opciones diseñadas para preservar los acrónimos.
+
+```{r}
+test1 <- c(text1 = "England and France are members of NATO and UNESCO",
+           text2 = "NASA sent a rocket into space.")
+char_tolower(test1)
+char_tolower(test1, keep_acronyms = TRUE)
+
+test2 <- tokens(test1, remove_punct = TRUE)
+tokens_tolower(test2)
+tokens_tolower(test2, keep_acronyms = TRUE)
+```
+
+
+### 3. Eliminación y selección de funciones
+
+Esto se puede hacer al crear un dfm:
+
+```{r}
+# with English stopwords and stemming
+dfmsInaug2 <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980),
+                  remove = stopwords("english"), stem = TRUE)
+dfmsInaug2
+head(dfmsInaug2)
+```
+
+
+O se puede hacer **después** de crear un dfm:
+
+```{r}
+myDfm <- dfm(c("My Christmas was ruined by your opposition tax plan.",
+               "Does the United_States or Sweden have more progressive taxation?"),
+             tolower = FALSE, verbose = TRUE)
+dfm_select(myDfm, pattern = c("s$", ".y"), selection = "keep", valuetype = "regex")
+dfm_select(myDfm, pattern = c("s$", ".y"), selection = "remove", valuetype = "regex")
+dfm_select(myDfm, pattern = stopwords("english"), selection = "keep", valuetype = "fixed")
+dfm_select(myDfm, pattern = stopwords("english"), selection = "remove", valuetype = "fixed")
+```
+
+Más ejemplos:
+
+```{r}
+# removing stopwords
+testText <- "The quick brown fox named Seamus jumps over the lazy dog also named Seamus, with
+             the newspaper from a boy named Seamus, in his mouth."
+testCorpus <- corpus(testText)
+# note: "also" is not in the default stopwords("english")
+featnames(dfm(testCorpus, remove = stopwords("english")))
+# for ngrams
+featnames(dfm(testCorpus, ngrams = 2, remove = stopwords("english")))
+featnames(dfm(testCorpus, ngrams = 1:2, remove = stopwords("english")))
+
+## removing stopwords before constructing ngrams
+tokensAll <- tokens(tolower(testText), remove_punct = TRUE)
+tokensNoStopwords <- tokens_remove(tokensAll, stopwords("english"))
+tokensNgramsNoStopwords <- tokens_ngrams(tokensNoStopwords, 2)
+featnames(dfm(tokensNgramsNoStopwords, verbose = FALSE))
+
+# keep only certain words
+dfm(testCorpus, select = "*s", verbose = FALSE)  # keep only words ending in "s"
+dfm(testCorpus, select = "s$", valuetype = "regex", verbose = FALSE)
+
+# testing Twitter functions
+testTweets <- c("My homie @justinbieber #justinbieber shopping in #LA yesterday #beliebers",
+                "2all the ha8ers including my bro #justinbieber #emabiggestfansjustinbieber",
+                "Justin Bieber #justinbieber #belieber #fetusjustin #EMABiggestFansJustinBieber")
+dfm(testTweets, select = "#*", remove_twitter = FALSE)  # keep only hashtags
+dfm(testTweets, select = "^#.*$", valuetype = "regex", remove_twitter = FALSE)
+```
+
+
+Una característica muy interesante es la posibilidad de crear un nuevo dfm con el mismo conjunto de características que el anterior. Esto es muy útil, por ejemplo, si entrenamos un modelo en un dfm y necesitamos predecir los recuentos de otro, pero necesitamos que el conjunto de características sea equivalente.
+
+```{r}
+# selecting on a dfm
+textVec1 <- c("This is text one.", "This, the second text.", "Here: the third text.")
+textVec2 <- c("Here are new words.", "New words in this text.")
+featnames(dfm1 <- dfm(textVec1))
+featnames(dfm2a <- dfm(textVec2))
+(dfm2b <- dfm_select(dfm2a, dfm1))
+identical(featnames(dfm1), featnames(dfm2b))
+```
+
+
+
+# Análisis descriptivo de textos
+
+Quanteda dispone de una serie de estadísticas descriptivas para informar sobre textos. El **más simple de estos** es a través del método `summary()`:
+
+```{r}
+txt <- c(sent1 = "This is an example of the summary method for character objects.",
+         sent2 = "The cat in the hat swung the bat.")
+summary(txt)
+```
+
+Esto también funciona para objetos de corpus:
+
+```{r}
+summary(corpus(data_char_ukimmig2010))
+```
+
+Para acceder a las **sílabas** de un texto, usamos `nsyllables()`:
+
+```{r}
+nsyllable(c("Superman.", "supercalifragilisticexpialidocious", "The cat in the hat."))
+```
+
+
+Podemos **identificar documentos y términos que son similares entre sí**, usando `textstat_simil()`:
+
+```{r}
+## Presidential Inaugural Address Corpus
+presDfm <- corpus_subset(data_corpus_inaugural, Year > 1980) %>%
+    dfm(remove = stopwords("english"), remove_punct = TRUE)
+# compute some document similarities
+textstat_simil(presDfm, presDfm["1985-Reagan",])
+textstat_simil(presDfm, presDfm[c("2009-Obama", "2013-Obama"),], method = "cosine")
+textstat_simil(presDfm, presDfm[c("2009-Obama", "2013-Obama"),], method = "jaccard")
+textstat_dist(presDfm, presDfm[c("2009-Obama", "2013-Obama"),])
+textstat_dist(presDfm, presDfm[c("2009-Obama", "2013-Obama"),], method = "manhattan")
+
+
+# compute some term similarities
+lapply(
+  as.list(
+    textstat_simil(presDfm, presDfm[,c("fair", "health", "terror")], margin = "features", method = "cosine")), 
+  head, n = 10
+  )
+```
+
+Y esto se puede usar para **agrupar documentos**:
+
+```{r, fig.height=6, fig.width=10}
+data(data_corpus_sotu, package = "quanteda.corpora")
+presDfm <- dfm(corpus_subset(data_corpus_sotu, Date > "1990-01-01"), stem = TRUE,
+               remove = c(stopwords("english"), "applause"), remove_punct = TRUE)
+presDfm <- dfm_trim(presDfm, min_termfreq = 5, min_docfreq = 3)
+
+# hierarchical clustering - get distances on normalized dfm
+presDistMat <- dist(as.matrix(dfm_weight(presDfm, "relFreq")))
+
+# hiarchical clustering the distance object
+presCluster <- hclust(presDistMat)
+
+# plot as a dendrogram
+plot(presCluster, labels = docnames(presDfm))
+```
+
+O podríamos mirar **agrupamiento de términos** en su lugar:
+
+```{r, fig.height=8, fig.width=12}
+# word dendrogram with tf-idf weighting
+wordDfm <- dfm_sort(dfm_tfidf(presDfm))
+wordDfm <- t(wordDfm)[1:100,]  # because transposed
+wordDistMat <- dist(wordDfm)
+wordCluster <- hclust(wordDistMat)
+plot(wordCluster, xlab = "", main = "tf-idf Frequency weighting")
+```
+
+
+
+
+
