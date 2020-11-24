@@ -81,7 +81,7 @@ ntype(data_corpus_inaugural[1:7])
 ```
 
 
-Una de las tareas de análisis de texto más fundamentales es la tokenización. Tokenizar un texto es dividirlo en unidades, más comúnmente palabras, que se pueden contar y formar la base de un análisis cuantitativo. El paquete quanteda tiene una función de tokenización: `tokens`, que construye un objeto de tokens ** quanteda ** que consiste en los textos segmentados por sus términos (y por defecto, otros elementos como puntuación, números, símbolos, etc.). Examine la página del manual en `? Tokens` para obtener detalles sobre esta función:
+Una de las tareas de análisis de texto más fundamentales es la tokenización. Tokenizar un texto es dividirlo en unidades, más comúnmente palabras, que se pueden contar y formar la base de un análisis cuantitativo. El paquete quanteda tiene una función de tokenización: `tokens`, que construye un objeto de tokens **quanteda** que consiste en los textos segmentados por sus términos (y por defecto, otros elementos como puntuación, números, símbolos, etc.). Examine la página del manual en `? Tokens` para obtener detalles sobre esta función:
 
 
 ```{R, eval = FALSE}
@@ -288,7 +288,7 @@ gsub('oranges', 'apples', 'these are oranges')
 
 
 
-### Expresiones regulares en ** stringr **
+### Expresiones regulares en **stringr**
 
 #### Coincidencia (matching)
 
@@ -355,7 +355,7 @@ str_detect(strings, coll(pattern))
 
 #### Segmentación
 
-También podemos segmentar palabras por sus definiciones de límites, que es parte de la definición Unicode. ** quanteda ** se basa en gran medida en esto para la _tokenización_, que es la segmentación de textos en subunidades (normalmente, términos).
+También podemos segmentar palabras por sus definiciones de límites, que es parte de la definición Unicode. **quanteda** se basa en gran medida en esto para la _tokenización_, que es la segmentación de textos en subunidades (normalmente, términos).
 ```{r}
 # Word boundaries
 words <- c("These are   some words.")
@@ -376,7 +376,7 @@ str_trim("\n\nString with trailing and leading white space\n\n")
 
 # Introducir textos en R
 
-En esta sección mostraremos cómo cargar textos de diferentes fuentes y crear un objeto `corpus` en ** quanteda **.
+En esta sección mostraremos cómo cargar textos de diferentes fuentes y crear un objeto `corpus` en **quanteda**.
 
 ## Creando un objeto `corpus`
 
@@ -384,9 +384,9 @@ En esta sección mostraremos cómo cargar textos de diferentes fuentes y crear u
 
 El paquete **quanteda** funciona muy bien con un paquete complementario que hemos escrito con el nombre, descriptivamente, [**readtext**](https://github.com/kbenoit/readtext). **readtext** es un paquete de una función que hace exactamente lo que dice en la lata: lee archivos que contienen texto, junto con cualquier metadato asociado a nivel de documento, que llamamos "docvars", para variables de documento. Los archivos de texto sin formato no tienen docvars, pero otras formas como los archivos .csv, .tab, .xml y .json generalmente sí.
 
-**readtext** acepta máscaras de archivo, por lo que puede especificar un patrón para cargar varios textos, y estos textos pueden incluso ser de varios tipos. ** readtext ** es lo suficientemente inteligente como para procesarlos correctamente, devolviendo un data.frame con un campo primario "texto" que contiene un vector de caracteres de los textos y columnas adicionales del data.frame como se encuentran en las variables del documento de la fuente archivos.
+**readtext** acepta máscaras de archivo, por lo que puede especificar un patrón para cargar varios textos, y estos textos pueden incluso ser de varios tipos. **readtext** es lo suficientemente inteligente como para procesarlos correctamente, devolviendo un data.frame con un campo primario "texto" que contiene un vector de caracteres de los textos y columnas adicionales del data.frame como se encuentran en las variables del documento de la fuente archivos.
 
-Dado que la codificación también puede ser un problema para quienes leen textos, incluimos funciones para diagnosticar codificaciones archivo por archivo, y le permitimos especificar codificaciones de entrada vectorizadas para leer en tipos de archivo con codificaciones establecidas individualmente (y diferentes) . (Todas las funciones de ecnoding son manejadas por el paquete ** stringi **).
+Dado que la codificación también puede ser un problema para quienes leen textos, incluimos funciones para diagnosticar codificaciones archivo por archivo, y le permitimos especificar codificaciones de entrada vectorizadas para leer en tipos de archivo con codificaciones establecidas individualmente (y diferentes) . (Todas las funciones de ecnoding son manejadas por el paquete **stringr**).
 
 Para instalar **readtext**, deberá usar el paquete **devtools** y luego ejecutar este comando:
 ```{r, eval = FALSE}
@@ -399,7 +399,9 @@ devtools::install_github("kbenoit/readtext")
 
 En el caso más simple, nos gustaría cargar un conjunto de textos en archivos de texto sin formato desde un solo directorio. Para hacer esto, usamos el comando `textfile`, y usamos el operador 'glob' '*' para indicar que queremos cargar múltiples archivos:
 
-```{r}
+```{r,}
+wd <- '/Users/jacobmunozc/Downloads/Data/'
+setwd(wd)
 require(readtext)
 myCorpus <- corpus(readtext("inaugural/*.txt"))
 myCorpus <- corpus(readtext("sotu/*.txt"))
@@ -408,8 +410,16 @@ myCorpus <- corpus(readtext("sotu/*.txt"))
 A menudo, tenemos metadatos codificados en los nombres de los archivos. Por ejemplo, las direcciones inaugurales contienen el año y el nombre del presidente en el nombre del archivo. Con el argumento `docvarsfrom`, podemos ordenar al comando` textfile` que considere estos elementos como variables de documento.
 
 ```{r}
-mytf <- readtext("inaugural/*.txt", docvarsfrom = "filenames", dvsep = "-", 
-                 docvarnames = c("Year", "President"))
+setwd(wd)
+mytf <- readtext(
+  "inaugural/*", 
+  docvarsfrom = "filenames", 
+  dvsep = "-", 
+  docvarnames = c("Year", "President"))
+
+require(dplyr)
+mytf <- mytf %>% mutate(doc_id = gsub(".txt", "",doc_id))
+
 data_corpus_inaugural <- corpus(mytf)
 summary(data_corpus_inaugural, 5)
 ```
@@ -417,6 +427,7 @@ summary(data_corpus_inaugural, 5)
 Si los textos y las variables del documento se almacenan por separado, podemos agregar fácilmente variables del documento al corpus, siempre que el marco de datos que las contiene tenga la misma longitud que los textos:
 
 ```{r}
+setwd(wd)
 SOTUdocvars <- read.csv("SOTU_metadata.csv", stringsAsFactors = FALSE)
 SOTUdocvars$Date <- as.Date(SOTUdocvars$Date, "%B %d, %Y")
 SOTUdocvars$delivery <- as.factor(SOTUdocvars$delivery)
@@ -424,7 +435,7 @@ SOTUdocvars$type <- as.factor(SOTUdocvars$type)
 SOTUdocvars$party <- as.factor(SOTUdocvars$party)
 SOTUdocvars$nwords <- NULL
 
-sotuCorpus <- corpus(readtext("sotu/*.txt", encoding = "UTF-8-BOM"))
+sotuCorpus <- corpus(readtext("sotu/*.txt"))
 docvars(sotuCorpus) <- SOTUdocvars
 ```
 
@@ -440,6 +451,8 @@ Sys.setlocale("LC_TIME", lct) # set original locale
 Otro caso común es que nuestros textos se almacenan junto con las variables del documento en un archivo estructurado, como un archivo json, csv o excel. El comando de archivo de texto puede leer los textos y las variables del documento simultáneamente de estos archivos cuando se especifica el nombre del campo que contiene los textos.
 
 ```{r}
+setwd(wd)
+
 tf1 <- readtext("inaugTexts.csv", text_field = "inaugSpeech")
 myCorpus <- corpus(tf1)
 
