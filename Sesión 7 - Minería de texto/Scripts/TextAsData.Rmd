@@ -5,7 +5,7 @@ output:
   html_document:
     css: style.css
     highlight: tango
-    # code_folding: hide
+    code_folding: hide
     toc: yes
     toc_float: 
       smooth_scroll: true
@@ -22,6 +22,7 @@ knitr::opts_chunk$set(
 # Preliminares: instalación
 
 Primero, necesita tener **quanteda** instalado.  Puede hacerlo desde RStudio, del menú Tools...Install Packages, o simplemente usando
+
 
 ```{r, eval = FALSE}
 install.packages("quanteda")
@@ -105,7 +106,7 @@ vec <- c(one = "This is text one",
 tokens(vec)
 ```
 
-Considere los argumentos predeterminados para la función `tokens ()`. Para eliminar la puntuación, debes establecer el argumento `remove_punct` en` TRUE`. Podemos combinar esto con la función `char_tolower ()` para obtener una versión limpia y tokenizada de nuestro texto.
+Considere los argumentos predeterminados para la función `tokens ()`. Para eliminar la puntuación, debes establecer el argumento `remove_punct` en` TRUE`. Podemos combinar esto con la función `char_tolower()` para obtener una versión limpia y tokenizada de nuestro texto.
 
 ```{r}
 tokens(char_tolower(vec), remove_punct = TRUE)
@@ -168,7 +169,7 @@ summary(recentCorpus)
 Podemos usar estos metadatos para combinar características en todos los documentos al crear una matriz de características de documento:
 
 ```{r  fig.width=10, fig.height=8, warning=FALSE}
-partyDfm <- dfm(recentCorpus, groups = "Party", remove = (stopwords("english")))
+partyDfm <- dfm(recentCorpus, groups = "Party", remove = (stopwords("english")),remove_punct = TRUE)
 textplot_wordcloud(partyDfm, comparison = TRUE)
 ```
 
@@ -240,6 +241,8 @@ La función `paste` se utiliza para unir vectores de caracteres. La forma en que
 ```{r} 
 paste('one', 'two', 'three')
 paste('one', 'two', 'three', sep = '_')
+paste('one', 'two', 'three', sep = '')
+paste0('one', 'two', 'three')
 paste(years, pres, sep = '-')
 paste(years, pres, collapse = '-')
 ```
@@ -305,7 +308,7 @@ require(stringr)
 
 pattern <- "a.b"
 strings <- c("abb", "a.b")
-str_detect(strings, pattern)
+stringr::str_detect(strings, pattern)
 ```
 
 Algunas variaciones
@@ -475,7 +478,7 @@ Una vez que hemos cargado un corpus con algunas variables de nivel de documento,
 
 ```{r}
 recentCorpus <- corpus_subset(data_corpus_inaugural, Year > 1980)
-oldCorpus <- corpus_subset(data_corpus_inaugural, Year < 1880)
+oldCorpus <- corpus_subset(data_corpus_inaugural, Year < 1980)
 
 demCorpus <- corpus_subset(sotuCorpus, party == 'Democratic')
 demFeatures <- dfm(demCorpus, remove = stopwords('english')) %>%
@@ -522,7 +525,6 @@ Aquí repasaremos los elementos básicos de la preparación de un texto para su 
 La tokenización en quanteda es muy *conservadora*: por defecto, solo elimina los caracteres separadores.
 
 ```{r}
-require(quanteda, quietly = TRUE, warn.conflicts = FALSE)
 txt <- c(text1 = "This is $10 in 999 different ways,\n up and down; left and right!",
          text2 = "@kenbenoit working: on #quanteda 2day\t4ever, http://textasdata.com?page=123.")
 tokens(txt)
@@ -571,7 +573,7 @@ tokens_tolower(test2, keep_acronyms = TRUE)
 ```
 
 
-### 3. Eliminación y selección de funciones
+### 3. Eliminación y selección de atributos
 
 Esto se puede hacer al crear un dfm:
 
