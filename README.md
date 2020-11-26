@@ -71,6 +71,7 @@ Para profundizar: Adaptative Boosting (AdaBoost), tree model hyperparameters, á
   [Slides](https://github.com/jacobmunozc/ML-IA/blob/main/Sesi%C3%B3n%206%20-%20Aprendizaje%20no%20supervisado/Sesion_6.pdf) 
 | [R scripts](https://github.com/jacobmunozc/ML-IA/blob/main/Sesi%C3%B3n%206%20-%20Aprendizaje%20no%20supervisado/Unsupervised.R)
 
+Para profundizar: PCA
 
 ## Sesión 7: Mineria de texto
 
@@ -78,6 +79,7 @@ Para profundizar: Adaptative Boosting (AdaBoost), tree model hyperparameters, á
 | [Rmd](https://raw.githack.com/jacobmunozc/ML-IA/main/Sesi%C3%B3n%207%20-%20Miner%C3%ADa%20de%20texto/Scripts/TextAsData.html)
 | [Datos](https://github.com/jacobmunozc/ML-IA/tree/main/Sesi%C3%B3n%207%20-%20Miner%C3%ADa%20de%20texto/Data)
 
+Para profundizar: Latent Dirichlet Allocation, Topic model
 
 ## Sesión 8: Aplicaciones
 
