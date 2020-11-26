@@ -81,6 +81,6 @@ Para profundizar: Adaptative Boosting (AdaBoost), tree model hyperparameters, á
 
 ## Sesión 8: Aplicaciones
 
-  [Slides]() 
+  [Slides](https://github.com/jacobmunozc/ML-IA/blob/main/Sesi%C3%B3n%208%20-%20Aplicaciones/Sesion_8.pdf) 
 
 
