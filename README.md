@@ -85,4 +85,13 @@ Para profundizar: Latent Dirichlet Allocation, Topic model
 
   [Slides](https://github.com/jacobmunozc/ML-IA/blob/main/Sesi%C3%B3n%208%20-%20Aplicaciones/Sesion_8.pdf) 
 
+## Sesión 9: Introducción a la IA
+
+  [Slides](https://github.com/jacobmunozc/ML-IA/blob/main/Sesi%C3%B3n%208%20-%20Aplicaciones/Sesion_9.pdf) 
+
+## Sesión 10: Propiedades de la IA
+
+  [Slides](https://github.com/jacobmunozc/ML-IA/blob/main/Sesi%C3%B3n%208%20-%20Aplicaciones/Sesion_10.pdf)
+| [Demo 1](https://raw.githack.com/jacobmunozc/ML-IA/main/Sesi%C3%B3n%207%20-%20Miner%C3%ADa%20de%20texto/Demo1.mov)
+| [Demo 2](https://raw.githack.com/jacobmunozc/ML-IA/main/Sesi%C3%B3n%207%20-%20Miner%C3%ADa%20de%20texto/Scripts/Demo2.mov)
 
